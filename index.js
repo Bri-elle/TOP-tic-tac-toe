@@ -21,12 +21,13 @@ const GameBoard = (() => {
 	// variables
 	// use an array to create board
 	let board = ["", "", "", "", "", "", "", "", ""];
-	let player1 = Player("Mark", "X");
-	let player2 = Player("Andrew", "O");
+	let player1 = Player("Player 1", "X");
+	let player2 = Player("Player 2", "O");
 	let move;
 	let moves = 0;
 	let rounds = 0;
 	let currentPlayer = player1;
+	let gameStatus = document.querySelector("#game-status");
 
 	//check if they win
 	function checkBoard() {
@@ -43,7 +44,7 @@ const GameBoard = (() => {
 		let winStrike = false;
 		for (let i = 0; i < winStrikes.length; i++) {
 			// console.log(...winStrikes[i]);
-			winStrike = Strike(...winStrikes[i]);
+			winStrike = Strike(...winStrikes[i], i);
 
 			if (winStrike === true) {
 				return true;
@@ -51,7 +52,7 @@ const GameBoard = (() => {
 		}
 	}
 
-	function Strike(a, b, c) {
+	function Strike(a, b, c, position) {
 		// console.log(a, b, c);
 		let first = document.querySelector(a);
 		let second = document.querySelector(b);
@@ -70,7 +71,7 @@ const GameBoard = (() => {
 		) {
 			// console.log("winner");
 			// Draw the strike line
-			drawStrikeLine(first, second, third);
+			drawStrikeLine(position);
 			// console.log(a, b, c);
 			return true;
 		}
@@ -90,6 +91,7 @@ const GameBoard = (() => {
 		if (screenText.innerHTML !== "") {
 			// console.log(screenText.innerHTML);
 			alert("cell occupied, please choose another");
+			return;
 		}
 		//updateBoard;
 		board[move] = currentPlayer.mark;
@@ -191,6 +193,7 @@ const GameBoard = (() => {
 	function updateGameStatus(text) {
 		let gameStatus = document.querySelector("#game-status");
 		gameStatus.textContent = text;
+		gameStatus.style.display = "block";
 	}
 	function updateScoreBoard() {
 		if (currentPlayer == player1) {
@@ -204,44 +207,81 @@ const GameBoard = (() => {
 		// console.log(currentPlayer.getScore());
 	}
 
-	function drawStrikeLine(cell1, cell2, cell3) {
-		const strikeLine = document.querySelector("#strike-line");
+	function drawStrikeLine(position) {
+		//check if combination is row1,row2 ... or a diagonal
+		let winStrikes = [
+			["#zero", "#one", "#two"],
+			["#three", "#four", "#five"],
+			["#six", "#seven", "#eight"],
+			["#zero", "#three", "#six"],
+			["#one", "#four", "#seven"],
+			["#two", "#five", "#eight"],
+			["#zero", "#four", "#eight"],
+			["#two", "#four", "#six"],
+		];
 
-		if (!strikeLine) {
-			// console.error("Strike line element not found");
-			return;
+		let strikePosition = "";
+		let strikeLine = document.querySelector("#strike-line");
+		strikeLine.classList.add("strike-row-1");
+
+		//add class to strike line and display it
+		switch (position) {
+			case 0:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-row-1");
+				strikeLine.style.display = "block";
+				break;
+
+			case 1:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-row-2");
+				strikeLine.style.display = "block";
+				break;
+
+			case 2:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-row-3");
+				strikeLine.style.display = "block";
+				break;
+
+			case 3:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-column-1");
+				strikeLine.style.display = "block";
+				break;
+
+			case 4:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-column-2");
+				strikeLine.style.display = "block";
+				break;
+
+			case 5:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-column-3");
+				strikeLine.style.display = "block";
+
+				break;
+			case 6:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-diagonal-1");
+				strikeLine.style.display = "block";
+
+				break;
+
+			case 7:
+				strikeLine.classList.value = "";
+				strikeLine.classList.add("strike-diagonal-2");
+				strikeLine.style.display = "block";
+
+				break;
 		}
-
-		const firstRect = cell1.getBoundingClientRect();
-		// const secondRect = cell2.getBoundingClientRect();
-		const thirdRect = cell3.getBoundingClientRect();
-		// Calculate the center points of the first and third cells
-		const startX = (firstRect.left + firstRect.right) / 2;
-		const startY = (firstRect.top + firstRect.bottom) / 2;
-		const endX = (thirdRect.left + thirdRect.right) / 2;
-		const endY = (thirdRect.top + thirdRect.bottom) / 2;
-		// Calculate the angle and length of the line
-		const deltaX = endX - startX;
-		const deltaY = endY - startY;
-		const angle = Math.atan2(deltaY, deltaX) * (180 / Math.PI);
-		const length = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-
-		// Adjust the position to center the line
-		const centerX = (startX + endX) / 2;
-		const centerY = (startY + endY) / 2;
-
-		// Position and style the strike line
-		strikeLine.style.width = `${length + 80}px`; // Add extra length for better visibility
-		strikeLine.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`; // Center and rotate
-		strikeLine.style.left = `${centerX}px`;
-		strikeLine.style.top = `${centerY}px`;
-		strikeLine.style.display = "block";
 	}
 
 	function isFilled() {
-		// console.log(moves);
-		if (moves == 9) {
+		if (moves === 9) {
 			updateGameStatus("Draw");
+
 			setTimeout(nextRound, 2000);
 		}
 	}
@@ -255,7 +295,8 @@ const GameBoard = (() => {
 	}
 	function nextRound() {
 		updateGameStatus("");
-		if (rounds == 3) {
+		gameStatus.style.display = "none";
+		if (rounds === 3) {
 			let text;
 			//check for the highest score and declare winner
 			if (player1.getScore() > player2.getScore()) {

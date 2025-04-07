@@ -13,6 +13,7 @@ Variables
 :root{
   --bg-color:#ffffff;
   --text-color:#2F2F2F;
+  --secondary-text-color: #ffffff;
   --primary-color:#00873B;
   --secondary-bg--color: #2F2F2F;
   --accent-color:#03DE54 ;
@@ -43,9 +44,7 @@ img, picture, video, canvas, svg {
 
 button {
   /* all: unset; */
-  border: none;
-  outline: none;
-  background: none;
+  outline-color: transparent;
 }
 
 
@@ -75,40 +74,176 @@ body {
   #container{
     width: 100vw;
     height: 100vh;
-    padding: 2rem;
-    border: 2px solid red;
-    display: grid;
-    place-items: center;
-    grid-template-rows: 10% 30% 10%;
-    
+    /* padding: 2rem; */
+    /* border: 2px solid red; */
+    display: flex;
+ flex-direction: column;
+ 
+ align-items: center;
+ /* justify-content: space-around; */
+   
   }
-  
-  
+/* Header */
+header{
+  padding: 4rem 0 2rem 0;
+
+}
+  header h3{
+    color: var(--primary-color);
+    text-align: center;
+  }
+
+  /* SCORE BOARD */
+  #score-board{
+background-color: var(--secondary-bg--color);
+width: 100%;
+height: 80px;
+padding: 16px;
+margin:  0 0 4rem 0;
+color: var(--bg-color);
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size:18px;
+  }
+  #score-board p{
+    font-weight: 400;
+display: flex;
+flex-direction: column;
+/* justify-content: center; */
+/* border: 2px solid white; */
+align-items: center;
+  }
+
+  #score-board .score{
+color: var(--accent-color);
+font-size: 24px;
+  }
+
+
+  /* GAME BOARD */
+    #game-board{
+position: relative;
+    }
+
+  #game-status{
+  margin: auto;
+  position: absolute;
+  top: 0; 
+  left: 0; 
+  bottom: 0; 
+  right: 0;
+  background-color: var(--secondary-bg--color);
+  color: var(--secondary-text-color);
+  text-align: center;
+  height: 50px;
+  align-content: center;
+  width: 85%;
+  font-size: 18px;
+  border-radius: 24px 0 24px 0;
+  display: none;
+    }
+
 
   .box{
-    width: 50px;
-    height: 50px;
+    width: calc(300px/3);
+    height: calc(300px/3);
     border: 2px solid;
     text-align: center;
     align-content: center;
+    font-size: 24px;
   }
+
 
   .row{
     display: flex;
   }
-  #strike-line{
-    position: absolute;
-  background: var(--primary-color);
-  height: 4px;  /* Thickness of the line */
-  width: 100%;  /* Initially 100%, but will change dynamically */
-  display: none; /* Hidden by default */
-  z-index: 10;
-  transform-origin: center; 
+  .row .left, .row .right{
+    border-left: none;
+    border-right: none;
+  }
+  
+ .row-1 .box, .row-2 .box {
+    border-bottom: 0;
+  }
+  .row-1 .box{
+    border-top: 0;
   }
 
-  button{
-    border: 2px solid var(--secondary-bg--color);
+  .row-3 .box{
+    border-bottom: 0;
+  }
+  #strike-line{
+  position: absolute;
+  background: var(--primary-color);
+  display: block; /* Hidden by default */
+  z-index: 10;
+  }
+  
+  .strike-row-1{
+    top: 16%;/* (100/3)/2*/
+    height: 6px; 
+  width: 100%; 
+  }
+
+  .strike-row-2{
+    height: 6px;  
+    width: 100%;
+    top: 49.5%
+  }
+
+  .strike-row-3{
+    height: 6px;  
+    width: 100%;
+    top: 83%
+  }
+
+  .strike-column-1{
+   width:6px; 
+   height: 100%;
+   left: 16%;
+  }
+
+
+  .strike-column-2{
+    width:6px; 
+    height: 100%;
+    left: 49.5%;
+  }
+
+  .strike-column-3{
+    width:6px; 
+    height: 100%;
+    left: 82.5%;
+  }
+
+  .strike-diagonal-1{
+   width: 100%; 
+    height: 6px;
+    top: 50%;
+    transform: skewY(45deg);
+  }
+  .strike-diagonal-2{
+    width: 100%; 
+     height: 6px;
+     top: 50%;
+     transform: skewY(-45deg);
+   }
+
+   #restart-btn{
+    border: 4px solid var(--secondary-bg--color);
+    background-color: var(--bg-color);
     display: none;
+    margin-top: auto;
+    height:40px;
+    font-style: 16px;
+    margin-bottom: 32px;
+    margin-right: 16px;
+    margin-left: auto;
+    box-shadow:  2px 2px 8px rgba(47, 47, 47,0.3);
+
+    padding: 0 20px;
+    border-radius: 8px;
   }
 /* || Header  */
   /* || Hero Section */
@@ -121,8 +256,21 @@ body {
 TYPOGRAPHY
 ===========
 */
+*
+{
+  font-family: "Inter", sans-serif;
+}
+h1{
+  font-size:40px;
+  font-weight: 700;
+}
 
-
+h3{
+  font-size: 22px;
+  font-weight: 300;
+  font-style: normal;
+  
+}
 
 /*
 =================================

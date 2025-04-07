@@ -6,39 +6,45 @@
 		<title>Tic-Tac-Toe</title>
 		<link rel="stylesheet" href="css/styles.css" />
 		<link rel="icon" href="/assets/favicon.ico" type="image/x-icon" />
+		<!-- add font -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800&display=swap"
+			rel="stylesheet"
+		/>
 	</head>
 	<body>
 		<main id="container">
 			<header>
 				<h1>Let's Play</h1>
-				<p>Tic-Tac-Toe</p>
+				<h3>Tic-tac-toe</h3>
 			</header>
 			<section id="score-board">
-				<p>Player 1: <span class="score-1">0</span></p>
-				<p>Player 2: <span class="score-2">0</span></p>
+				<p>Player 1 <span class="score score-1">0</span></p>
+				<p>Player 2 <span class="score score-2">0</span></p>
 			</section>
 
 			<section id="game-board">
-				<div id="strike-line"></div>
+				<div id="strike-line" class=""></div>
 				<p id="game-status"></p>
 				<div class="row row-1">
-					<div id="zero" class="box"></div>
+					<div id="zero" class="left box"></div>
 					<div id="one" class="box"></div>
-					<div id="two" class="box"></div>
+					<div id="two" class="right box"></div>
 				</div>
 				<div class="row row-2">
-					<div id="three" class="box"></div>
+					<div id="three" class="left box"></div>
 					<div id="four" class="box"></div>
-					<div id="five" class="box"></div>
+					<div id="five" class="right box"></div>
 				</div>
 				<div class="row row-3">
-					<div id="six" class="box"></div>
+					<div id="six" class="left box"></div>
 					<div id="seven" class="box"></div>
-					<div id="eight" class="box"></div>
+					<div id="eight" class="right box"></div>
 				</div>
 			</section>
-				<button id="restart-btn" type="reset">Restart Game</button>
-		
+			<button id="restart-btn" type="reset">Restart Game</button>
 		</main>
 
 		<script src="index.js"></script>
