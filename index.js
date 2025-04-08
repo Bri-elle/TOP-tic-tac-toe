@@ -115,7 +115,7 @@ const GameBoard = (() => {
 					hideStrikeLine();
 				}, 1000);
 				// play next round
-				setTimeout(nextRound, 1200);
+				setTimeout(nextRound, 1500);
 				// nextRound();
 			} else {
 				isFilled();
