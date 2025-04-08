@@ -44,15 +44,16 @@ const GameBoard = (() => {
 		let winStrike = false;
 		for (let i = 0; i < winStrikes.length; i++) {
 			// console.log(...winStrikes[i]);
-			winStrike = Strike(...winStrikes[i], i);
+			winStrike = Strike(...winStrikes[i]);
 
 			if (winStrike === true) {
-				return true;
+				return i;
 			}
 		}
+		return false;
 	}
 
-	function Strike(a, b, c, position) {
+	function Strike(a, b, c) {
 		// console.log(a, b, c);
 		let first = document.querySelector(a);
 		let second = document.querySelector(b);
@@ -71,7 +72,6 @@ const GameBoard = (() => {
 		) {
 			// console.log("winner");
 			// Draw the strike line
-			drawStrikeLine(position);
 			// console.log(a, b, c);
 			return true;
 		}
@@ -101,20 +101,23 @@ const GameBoard = (() => {
 
 		//check for winner
 		if (moves > 4) {
-			let winner = checkBoard();
-			if (winner) {
+			let strikePosition = checkBoard();
+			if (strikePosition) {
 				// console.log(`${currentPlayer.name} wins`);
 				//update currentPlayer's score
 				currentPlayer.updateScore();
 				// console.log("Score:" + currentPlayer.getScore());
 				//update game status
-				updateScoreBoard(currentPlayer);
-				updateGameStatus(`${currentPlayer.name} wins`);
-				disableBoard();
-				// drawStrikeLine(winnerCombo);
+				updateScoreBoard();
+				drawStrikeLine(strikePosition);
 
-				// // play next round
-				setTimeout(nextRound, 2000);
+				disableBoard();
+				setTimeout(() => {
+					updateGameStatus(`${currentPlayer.name} wins`);
+					hideStrikeLine();
+				}, 1000);
+				// play next round
+				setTimeout(nextRound, 1500);
 				// nextRound();
 			} else {
 				isFilled();
@@ -195,7 +198,10 @@ const GameBoard = (() => {
 		gameStatus.textContent = text;
 		gameStatus.style.display = "block";
 	}
+
 	function updateScoreBoard() {
+		console.log(currentPlayer.getScore());
+
 		if (currentPlayer == player1) {
 			text = ".score-1";
 		} else {
@@ -280,6 +286,8 @@ const GameBoard = (() => {
 
 	function isFilled() {
 		if (moves === 9) {
+			let winMove = checkBoard();
+
 			updateGameStatus("Draw");
 
 			setTimeout(nextRound, 2000);
