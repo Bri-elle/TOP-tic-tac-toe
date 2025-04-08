@@ -43,17 +43,17 @@ const GameBoard = (() => {
 		];
 		let winStrike = false;
 		for (let i = 0; i < winStrikes.length; i++) {
-			// console.log(...winStrikes[i]);
-			winStrike = Strike(...winStrikes[i]);
+			console.log(...winStrikes[i]);
+			winStrike = Strike(...winStrikes[i], i);
 
 			if (winStrike === true) {
+				console.log("Position:" + i);
 				return i;
 			}
 		}
-		return false;
 	}
 
-	function Strike(a, b, c) {
+	function Strike(a, b, c, i) {
 		// console.log(a, b, c);
 		let first = document.querySelector(a);
 		let second = document.querySelector(b);
@@ -72,6 +72,7 @@ const GameBoard = (() => {
 		) {
 			// console.log("winner");
 			// Draw the strike line
+			// drawStrikeLine(i);
 			// console.log(a, b, c);
 			return true;
 		}
@@ -102,22 +103,19 @@ const GameBoard = (() => {
 		//check for winner
 		if (moves > 4) {
 			let strikePosition = checkBoard();
-			if (strikePosition) {
-				// console.log(`${currentPlayer.name} wins`);
-				//update currentPlayer's score
+			if (strikePosition >= 0 && strikePosition <= 7) {
 				currentPlayer.updateScore();
 				// console.log("Score:" + currentPlayer.getScore());
 				//update game status
 				updateScoreBoard();
 				drawStrikeLine(strikePosition);
-
 				disableBoard();
 				setTimeout(() => {
 					updateGameStatus(`${currentPlayer.name} wins`);
 					hideStrikeLine();
 				}, 1000);
 				// play next round
-				setTimeout(nextRound, 1500);
+				setTimeout(nextRound, 1200);
 				// nextRound();
 			} else {
 				isFilled();
@@ -215,71 +213,45 @@ const GameBoard = (() => {
 
 	function drawStrikeLine(position) {
 		//check if combination is row1,row2 ... or a diagonal
-		let winStrikes = [
-			["#zero", "#one", "#two"],
-			["#three", "#four", "#five"],
-			["#six", "#seven", "#eight"],
-			["#zero", "#three", "#six"],
-			["#one", "#four", "#seven"],
-			["#two", "#five", "#eight"],
-			["#zero", "#four", "#eight"],
-			["#two", "#four", "#six"],
-		];
 
 		let strikePosition = "";
 		let strikeLine = document.querySelector("#strike-line");
-		strikeLine.classList.add("strike-row-1");
+		strikeLine.style.display = "block";
+		strikeLine.classList.value = "";
 
 		//add class to strike line and display it
 		switch (position) {
 			case 0:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-row-1");
-				strikeLine.style.display = "block";
 				break;
 
 			case 1:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-row-2");
-				strikeLine.style.display = "block";
 				break;
 
 			case 2:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-row-3");
-				strikeLine.style.display = "block";
 				break;
 
 			case 3:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-column-1");
-				strikeLine.style.display = "block";
 				break;
 
 			case 4:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-column-2");
-				strikeLine.style.display = "block";
 				break;
 
 			case 5:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-column-3");
-				strikeLine.style.display = "block";
 
 				break;
 			case 6:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-diagonal-1");
-				strikeLine.style.display = "block";
 
 				break;
 
 			case 7:
-				strikeLine.classList.value = "";
 				strikeLine.classList.add("strike-diagonal-2");
-				strikeLine.style.display = "block";
-
 				break;
 		}
 	}
@@ -326,7 +298,7 @@ const GameBoard = (() => {
 			// console.log("Moves:" + moves);
 			rounds++;
 			// clear board
-			hideStrikeLine();
+			// hideStrikeLine();
 			clearBoard();
 			moves = 0;
 			// console.log("Moves:" + moves);
